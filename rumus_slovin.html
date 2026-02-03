@@ -13,33 +13,48 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
         .fade-in {
             animation: fadeIn 0.3s ease-out;
+        }
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #0891b2 0%, #0369a1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         @media print {
             .no-print { display: none; }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-600 to-purple-700 min-h-screen p-2 sm:p-4 md:p-8 font-sans">
+<body class="bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-100 min-h-screen p-2 sm:p-4 md:p-8 font-sans">
 
     <!-- Navigation Bar -->
-    <nav class="max-w-6xl mx-auto mb-4 sm:mb-6">
-        <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-4">
+    <nav class="max-w-7xl mx-auto mb-4 sm:mb-6 slide-in">
+        <div class="bg-white rounded-2xl shadow-xl p-3 sm:p-4 border-t-4 border-cyan-500">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-                <div class="flex items-center gap-2 text-center sm:text-left">
-                    <i data-lucide="book-open" class="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600 hidden sm:block"></i>
+                <div class="flex items-center gap-3 text-center sm:text-left">
+                    <div class="bg-gradient-to-br from-cyan-500 to-blue-600 p-2 sm:p-3 rounded-xl">
+                        <i data-lucide="book-open" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
+                    </div>
                     <div>
-                        <h2 class="font-bold text-gray-800 text-sm sm:text-base">Statistika & Probabilitas</h2>
-                        <p class="text-xs text-gray-600 hidden sm:block">EAS - Tugas Akhir Semester</p>
+                        <h2 class="font-bold text-gray-800 text-sm sm:text-base gradient-text">Statistika & Probabilitas</h2>
+                        <p class="text-xs text-gray-600">EAS - Tugas Akhir Semester</p>
                     </div>
                 </div>
                 <div class="flex gap-2 w-full sm:w-auto">
-                    <a href="index.html" class="flex-1 sm:flex-initial bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition text-center text-xs sm:text-sm flex items-center justify-center gap-2">
+                    <a href="index.html" class="flex-1 sm:flex-initial bg-gray-100 text-gray-700 px-4 py-2.5 rounded-xl font-semibold hover:bg-gray-200 transition-all text-center text-xs sm:text-sm flex items-center justify-center gap-2">
                         <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
                         <span>Regresi Linier</span>
                     </a>
-                    <a href="rumus_slovin.html" class="flex-1 sm:flex-initial bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg font-semibold text-center text-xs sm:text-sm flex items-center justify-center gap-2">
+                    <a href="rumus_slovin.html" class="flex-1 sm:flex-initial bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-4 py-2.5 rounded-xl font-semibold text-center text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all">
                         <i data-lucide="calculator" class="w-4 h-4"></i>
                         <span>Rumus Slovin</span>
                     </a>
@@ -50,7 +65,7 @@
 
     <!-- Toast Notification -->
     <div id="toast" class="fixed top-4 right-4 z-50 hidden">
-        <div class="bg-white rounded-lg shadow-2xl p-4 flex items-center gap-3 min-w-[250px] sm:min-w-[300px] max-w-md fade-in">
+        <div class="bg-white rounded-xl shadow-2xl p-4 flex items-center gap-3 min-w-[250px] sm:min-w-[300px] max-w-md fade-in border-l-4 border-cyan-500">
             <div id="toastIcon" class="flex-shrink-0"></div>
             <div class="flex-1">
                 <p id="toastMessage" class="text-xs sm:text-sm font-medium text-gray-900"></p>
@@ -65,26 +80,33 @@
     <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden flex items-center justify-center">
         <div class="bg-white rounded-2xl p-6 sm:p-8 flex flex-col items-center gap-4">
             <div class="animate-spin">
-                <i data-lucide="loader-2" class="w-10 h-10 sm:w-12 sm:h-12 text-indigo-600"></i>
+                <i data-lucide="loader-2" class="w-10 h-10 sm:w-12 sm:h-12 text-cyan-600"></i>
             </div>
             <p class="text-gray-700 font-medium text-sm sm:text-base">Menghitung ukuran sampel...</p>
         </div>
     </div>
 
-    <div class="max-w-6xl mx-auto bg-white rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden">
+    <div class="max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-200">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-4 sm:p-6 md:p-8 text-white text-center">
-            <div class="flex items-center justify-center gap-2 sm:gap-3 mb-2">
-                <i data-lucide="bar-chart-2" class="w-8 h-8 sm:w-10 sm:h-10"></i>
-                <h1 class="text-xl sm:text-2xl md:text-3xl font-bold">Kalkulator Rumus Slovin</h1>
+        <div class="bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-700 p-4 sm:p-6 md:p-8 text-white text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-white opacity-5">
+                <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
             </div>
-            <p class="opacity-90 text-xs sm:text-sm md:text-base">Hitung Ukuran Sampel untuk Penelitian dengan Mudah dan Akurat</p>
+            <div class="relative z-10">
+                <div class="flex items-center justify-center gap-2 sm:gap-3 mb-3">
+                    <div class="bg-white bg-opacity-20 p-2 sm:p-3 rounded-xl backdrop-blur-sm">
+                        <i data-lucide="pie-chart" class="w-8 h-8 sm:w-10 sm:h-10"></i>
+                    </div>
+                    <h1 class="text-xl sm:text-2xl md:text-4xl font-extrabold tracking-tight">Kalkulator Rumus Slovin</h1>
+                </div>
+                <p class="opacity-95 text-xs sm:text-sm md:text-base font-medium">Hitung Ukuran Sampel untuk Penelitian dengan Mudah dan Akurat</p>
+            </div>
         </div>
 
         <!-- Student Info Table -->
-        <div class="p-4 sm:p-6 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-50 border-b-4 border-indigo-200">
-            <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-3 sm:p-4 text-white text-center">
+        <div class="p-4 sm:p-6 md:p-8 bg-gradient-to-br from-cyan-50 to-blue-50 border-b-4 border-cyan-200">
+            <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden border border-cyan-200">
+                <div class="bg-gradient-to-r from-cyan-600 to-blue-600 p-3 sm:p-4 text-white text-center">
                     <h3 class="font-bold text-sm sm:text-base flex items-center justify-center gap-2">
                         <i data-lucide="user-circle" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                         Informasi Mahasiswa
@@ -92,15 +114,15 @@
                 </div>
                 <table class="w-full text-xs sm:text-sm">
                     <tbody class="divide-y divide-gray-200">
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-cyan-50 transition-colors">
                             <td class="p-2 sm:p-3 font-semibold text-gray-700 w-24 sm:w-32">Nama</td>
                             <td class="p-2 sm:p-3 text-gray-600">: Ade Ramadhani Putra</td>
                         </tr>
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-cyan-50 transition-colors">
                             <td class="p-2 sm:p-3 font-semibold text-gray-700">NIM</td>
                             <td class="p-2 sm:p-3 text-gray-600">: 202240045</td>
                         </tr>
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-cyan-50 transition-colors">
                             <td class="p-2 sm:p-3 font-semibold text-gray-700">Mata Kuliah</td>
                             <td class="p-2 sm:p-3 text-gray-600">: Statistika dan Probabilitas</td>
                         </tr>
@@ -113,15 +135,17 @@
             
             <!-- Section 1: Input Data -->
             <section>
-                <div class="flex items-center gap-2 mb-4 sm:mb-6">
-                    <i data-lucide="clipboard-list" class="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600"></i>
-                    <h2 class="text-base sm:text-lg md:text-xl font-bold text-indigo-600 border-l-4 border-indigo-500 pl-3 sm:pl-4">1. Input Data Penelitian</h2>
+                <div class="flex items-center gap-3 mb-4 sm:mb-6">
+                    <div class="bg-gradient-to-br from-cyan-500 to-blue-600 p-2 rounded-lg">
+                        <i data-lucide="clipboard-list" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
+                    </div>
+                    <h2 class="text-base sm:text-lg md:text-xl font-bold text-cyan-700">1. Input Data Penelitian</h2>
                 </div>
                 
-                <div class="bg-gray-50 rounded-xl p-4 sm:p-6">
+                <div class="bg-gradient-to-br from-gray-50 to-cyan-50 rounded-2xl p-4 sm:p-6 border border-cyan-100">
                     <div class="grid md:grid-cols-2 gap-4 sm:gap-6">
                         <!-- Population Input -->
-                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md">
+                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-cyan-100">
                             <label for="population" class="block text-xs sm:text-sm font-bold text-gray-700 mb-3 flex items-center">
                                 <span class="bg-blue-100 text-blue-600 rounded-lg p-2 mr-2">
                                     <i data-lucide="users" class="w-4 h-4 sm:w-5 sm:h-5"></i>
@@ -135,7 +159,7 @@
                                 max="1000000000"
                                 step="1"
                                 placeholder="Contoh: 1000"
-                                class="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition text-center text-xl sm:text-2xl font-bold"
+                                class="w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-300 rounded-xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 focus:outline-none transition text-center text-xl sm:text-2xl font-bold hover:border-cyan-300"
                                 aria-describedby="populationHelp"
                                 aria-required="true"
                             >
@@ -143,7 +167,7 @@
                         </div>
 
                         <!-- Margin of Error Input -->
-                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md">
+                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-cyan-100">
                             <label for="marginError" class="block text-xs sm:text-sm font-bold text-gray-700 mb-3 flex items-center">
                                 <span class="bg-orange-100 text-orange-600 rounded-lg p-2 mr-2">
                                     <i data-lucide="target" class="w-4 h-4 sm:w-5 sm:h-5"></i>
@@ -152,7 +176,7 @@
                             </label>
                             <select 
                                 id="marginError" 
-                                class="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition text-center text-sm sm:text-lg font-semibold"
+                                class="w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-300 rounded-xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 focus:outline-none transition text-center text-sm sm:text-base font-semibold hover:border-cyan-300"
                                 aria-describedby="marginHelp"
                                 aria-required="true"
                             >
@@ -183,7 +207,7 @@
                                     max="50"
                                     step="0.1"
                                     placeholder="Contoh: 2.5"
-                                    class="w-32 sm:w-48 px-3 sm:px-4 py-2 sm:py-3 border-2 border-yellow-300 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500 focus:outline-none text-center text-lg sm:text-xl font-bold"
+                                    class="w-32 sm:w-48 px-4 sm:px-5 py-3 sm:py-4 border-2 border-yellow-300 rounded-xl focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500 focus:outline-none text-center text-lg sm:text-xl font-bold"
                                     aria-label="Custom margin of error dalam persen"
                                 >
                                 <span class="text-xl sm:text-2xl font-bold text-gray-700">%</span>
@@ -196,7 +220,7 @@
                     <div class="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mt-6 sm:mt-8">
                         <button 
                             onclick="calculate()" 
-                            class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full font-bold hover:from-indigo-700 hover:to-purple-700 transition shadow-lg text-sm sm:text-base md:text-lg flex items-center gap-2"
+                            class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-5 sm:px-8 md:px-10 py-2.5 sm:py-3 rounded-xl font-bold hover:from-cyan-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base flex items-center gap-2"
                             aria-label="Hitung ukuran sampel"
                         >
                             <i data-lucide="calculator" class="w-4 h-4 sm:w-5 sm:h-5"></i>
@@ -204,7 +228,7 @@
                         </button>
                         <button 
                             onclick="resetData()" 
-                            class="bg-gray-500 text-white px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full font-bold hover:bg-gray-600 transition text-sm sm:text-base md:text-lg flex items-center gap-2"
+                            class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-5 sm:px-8 md:px-10 py-2.5 sm:py-3 rounded-xl font-bold hover:from-gray-600 hover:to-gray-700 transition-all shadow-md hover:shadow-lg text-sm sm:text-base flex items-center gap-2"
                             aria-label="Reset semua input"
                         >
                             <i data-lucide="refresh-cw" class="w-4 h-4 sm:w-5 sm:h-5"></i>
@@ -220,29 +244,29 @@
                 <!-- Main Result Card -->
                 <div class="grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
                     <!-- Result Display -->
-                    <div class="bg-gradient-to-br from-pink-500 to-rose-500 p-4 sm:p-6 md:p-8 rounded-2xl text-white shadow-2xl">
-                        <h3 class="text-sm sm:text-base md:text-lg font-semibold mb-4 flex items-center">
+                    <div class="bg-gradient-to-br from-cyan-600 via-blue-600 to-indigo-700 p-4 sm:p-6 md:p-8 rounded-2xl text-white shadow-2xl border-4 border-white">
+                        <h3 class="text-sm sm:text-base md:text-lg font-bold mb-4 flex items-center">
                             <span class="bg-white bg-opacity-20 rounded-lg p-2 mr-2">
                                 <i data-lucide="trending-up" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                             </span>
                             Hasil Perhitungan Slovin
                         </h3>
                         
-                        <div class="bg-white bg-opacity-20 p-4 sm:p-6 rounded-xl mb-4">
+                        <div class="bg-white bg-opacity-15 backdrop-blur-sm p-4 sm:p-6 rounded-xl mb-4">
                             <p class="text-xs sm:text-sm opacity-90 mb-2">Ukuran Sampel Minimum (n)</p>
                             <div id="sampleSize" class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-center my-4">-</div>
                             <p class="text-center text-xs sm:text-sm opacity-90">responden</p>
                         </div>
 
                         <div class="grid grid-cols-2 gap-3">
-                            <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                            <div class="bg-white bg-opacity-15 backdrop-blur-sm p-3 rounded-lg">
                                 <p class="text-xs opacity-75 mb-1 flex items-center gap-1">
                                     <i data-lucide="users" class="w-3 h-3"></i>
                                     Populasi (N)
                                 </p>
                                 <p id="displayPopulation" class="text-base sm:text-lg md:text-xl font-bold">-</p>
                             </div>
-                            <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                            <div class="bg-white bg-opacity-15 backdrop-blur-sm p-3 rounded-lg">
                                 <p class="text-xs opacity-75 mb-1 flex items-center gap-1">
                                     <i data-lucide="percent" class="w-3 h-3"></i>
                                     Margin Error (e)
@@ -261,9 +285,11 @@
                     </div>
 
                     <!-- Visual Chart -->
-                    <div class="bg-gray-50 p-4 sm:p-6 rounded-2xl shadow-inner">
+                    <div class="bg-gradient-to-br from-gray-50 to-blue-50 p-4 sm:p-6 rounded-2xl shadow-lg border border-cyan-100">
                         <h3 class="text-center font-bold mb-4 text-gray-700 text-sm sm:text-base md:text-lg flex items-center justify-center gap-2">
-                            <i data-lucide="pie-chart" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                            <div class="bg-cyan-500 p-2 rounded-lg">
+                                <i data-lucide="pie-chart" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i>
+                            </div>
                             Visualisasi Perbandingan
                         </h3>
                         <canvas id="comparisonChart"></canvas>
@@ -274,9 +300,9 @@
                 </div>
 
                 <!-- Detailed Calculation Steps -->
-                <section class="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 sm:p-6 md:p-8 rounded-2xl border-2 border-indigo-200">
-                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-indigo-700 mb-4 sm:mb-6 flex items-center flex-wrap">
-                        <span class="bg-indigo-100 text-indigo-600 rounded-lg p-2 sm:p-3 mr-2 sm:mr-3">
+                <section class="bg-gradient-to-br from-blue-50 to-cyan-50 p-4 sm:p-6 md:p-8 rounded-2xl border-2 border-cyan-200 shadow-lg">
+                    <h2 class="text-base sm:text-lg md:text-xl font-bold text-cyan-700 mb-4 sm:mb-6 flex items-center flex-wrap gap-2">
+                        <span class="bg-cyan-500 text-white rounded-xl p-2 sm:p-3">
                             <i data-lucide="list-ordered" class="w-5 h-5 sm:w-6 sm:h-6"></i>
                         </span>
                         <span>Langkah-Langkah Perhitungan Detail</span>
@@ -286,11 +312,11 @@
                         <!-- Steps will be inserted here -->
                     </div>
 
-                    <div class="mt-4 sm:mt-6 p-3 sm:p-4 bg-white rounded-xl border-l-4 border-indigo-500">
+                    <div class="mt-4 sm:mt-6 p-3 sm:p-4 bg-white rounded-xl border-l-4 border-cyan-500 shadow-sm">
                         <div class="flex items-start gap-2">
-                            <i data-lucide="lightbulb" class="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 mt-1 flex-shrink-0"></i>
+                            <i data-lucide="lightbulb" class="w-4 h-4 sm:w-5 sm:h-5 text-cyan-600 mt-1 flex-shrink-0"></i>
                             <div>
-                                <h4 class="font-bold text-indigo-700 mb-2 text-xs sm:text-sm">Catatan Penting:</h4>
+                                <h4 class="font-bold text-cyan-700 mb-2 text-xs sm:text-sm">Catatan Penting:</h4>
                                 <p class="text-xs sm:text-sm text-gray-700">Hasil perhitungan menggunakan rumus Slovin memberikan ukuran sampel <strong>minimum</strong> yang diperlukan. Anda dapat mengambil sampel lebih banyak untuk meningkatkan keakuratan penelitian.</p>
                             </div>
                         </div>
@@ -298,9 +324,9 @@
                 </section>
 
                 <!-- Interpretation Section -->
-                <section class="bg-gradient-to-br from-green-50 to-emerald-50 p-4 sm:p-6 md:p-8 rounded-2xl border-2 border-green-200">
-                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-green-700 mb-4 sm:mb-6 flex items-center flex-wrap">
-                        <span class="bg-green-100 text-green-600 rounded-lg p-2 sm:p-3 mr-2 sm:mr-3">
+                <section class="bg-gradient-to-br from-green-50 to-emerald-50 p-4 sm:p-6 md:p-8 rounded-2xl border-2 border-green-200 shadow-lg">
+                    <h2 class="text-base sm:text-lg md:text-xl font-bold text-green-700 mb-4 sm:mb-6 flex items-center flex-wrap gap-2">
+                        <span class="bg-green-500 text-white rounded-xl p-2 sm:p-3">
                             <i data-lucide="message-circle" class="w-5 h-5 sm:w-6 sm:h-6"></i>
                         </span>
                         <span>Interpretasi Hasil</span>
@@ -312,9 +338,9 @@
                 </section>
 
                 <!-- Recommendations -->
-                <section class="bg-gradient-to-br from-orange-50 to-amber-50 p-4 sm:p-6 md:p-8 rounded-2xl border-2 border-orange-200">
-                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-orange-700 mb-4 sm:mb-6 flex items-center flex-wrap">
-                        <span class="bg-orange-100 text-orange-600 rounded-lg p-2 sm:p-3 mr-2 sm:mr-3">
+                <section class="bg-gradient-to-br from-orange-50 to-amber-50 p-4 sm:p-6 md:p-8 rounded-2xl border-2 border-orange-200 shadow-lg">
+                    <h2 class="text-base sm:text-lg md:text-xl font-bold text-orange-700 mb-4 sm:mb-6 flex items-center flex-wrap gap-2">
+                        <span class="bg-orange-500 text-white rounded-xl p-2 sm:p-3">
                             <i data-lucide="star" class="w-5 h-5 sm:w-6 sm:h-6"></i>
                         </span>
                         <span>Rekomendasi</span>
@@ -326,40 +352,40 @@
                 </section>
 
                 <!-- Comparison Table -->
-                <section class="bg-white p-4 sm:p-6 md:p-8 rounded-2xl border-2 border-gray-200 shadow-md">
-                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center flex-wrap">
-                        <span class="bg-gray-100 text-gray-600 rounded-lg p-2 sm:p-3 mr-2 sm:mr-3">
+                <section class="bg-white p-4 sm:p-6 md:p-8 rounded-2xl border-2 border-gray-200 shadow-lg">
+                    <h2 class="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center flex-wrap gap-2">
+                        <span class="bg-gray-500 text-white rounded-xl p-2 sm:p-3">
                             <i data-lucide="table" class="w-5 h-5 sm:w-6 sm:h-6"></i>
                         </span>
                         <span>Perbandingan Berbagai Margin Error</span>
                     </h2>
                     
-                    <div class="overflow-x-auto">
-                        <table class="w-full border-collapse text-xs sm:text-sm min-w-[500px]">
+                    <div class="overflow-auto rounded-xl shadow-sm">
+                        <table class="w-full border-collapse text-xs sm:text-sm bg-white">
                             <thead>
-                                <tr class="bg-gray-100">
-                                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-left border-b-2 border-gray-300">
+                                <tr class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white">
+                                    <th class="px-3 sm:px-4 py-3 sm:py-4 text-left rounded-tl-xl">
                                         <div class="flex items-center gap-2">
                                             <i data-lucide="percent" class="w-3 h-3 sm:w-4 sm:h-4"></i>
-                                            Margin Error
+                                            <span>Margin Error</span>
                                         </div>
                                     </th>
-                                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-center border-b-2 border-gray-300">
+                                    <th class="px-3 sm:px-4 py-3 sm:py-4 text-center">
                                         <div class="flex items-center justify-center gap-2">
                                             <i data-lucide="gauge" class="w-3 h-3 sm:w-4 sm:h-4"></i>
-                                            Tingkat Presisi
+                                            <span>Tingkat Presisi</span>
                                         </div>
                                     </th>
-                                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-center border-b-2 border-gray-300">
+                                    <th class="px-3 sm:px-4 py-3 sm:py-4 text-center">
                                         <div class="flex items-center justify-center gap-2">
                                             <i data-lucide="users-2" class="w-3 h-3 sm:w-4 sm:h-4"></i>
-                                            Ukuran Sampel
+                                            <span>Ukuran Sampel</span>
                                         </div>
                                     </th>
-                                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-center border-b-2 border-gray-300">
+                                    <th class="px-3 sm:px-4 py-3 sm:py-4 text-center rounded-tr-xl">
                                         <div class="flex items-center justify-center gap-2">
                                             <i data-lucide="pie-chart" class="w-3 h-3 sm:w-4 sm:h-4"></i>
-                                            % Populasi
+                                            <span>% Populasi</span>
                                         </div>
                                     </th>
                                 </tr>
@@ -375,7 +401,7 @@
                 <div class="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 no-print">
                     <button 
                         onclick="printResults()" 
-                        class="bg-blue-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-600 transition flex items-center gap-2 text-xs sm:text-sm"
+                        class="bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 px-5 sm:px-7 py-2.5 rounded-xl hover:from-blue-200 hover:to-cyan-200 transition-all flex items-center gap-2 border-2 border-blue-300 text-xs sm:text-sm font-semibold shadow-sm hover:shadow-md"
                         aria-label="Cetak hasil"
                     >
                         <i data-lucide="printer" class="w-4 h-4 sm:w-5 sm:h-5"></i>
@@ -383,7 +409,7 @@
                     </button>
                     <button 
                         onclick="copyToClipboard()" 
-                        class="bg-green-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-green-600 transition flex items-center gap-2 text-xs sm:text-sm"
+                        class="bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 px-5 sm:px-7 py-2.5 rounded-xl hover:from-green-200 hover:to-emerald-200 transition-all flex items-center gap-2 border-2 border-green-300 text-xs sm:text-sm font-semibold shadow-sm hover:shadow-md"
                         aria-label="Salin ke clipboard"
                     >
                         <i data-lucide="copy" class="w-4 h-4 sm:w-5 sm:h-5"></i>
@@ -391,7 +417,7 @@
                     </button>
                     <button 
                         onclick="saveToLocalStorage()" 
-                        class="bg-purple-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-purple-600 transition flex items-center gap-2 text-xs sm:text-sm"
+                        class="bg-gradient-to-r from-purple-100 to-violet-100 text-purple-700 px-5 sm:px-7 py-2.5 rounded-xl hover:from-purple-200 hover:to-violet-200 transition-all flex items-center gap-2 border-2 border-purple-300 text-xs sm:text-sm font-semibold shadow-sm hover:shadow-md"
                         aria-label="Simpan ke browser"
                     >
                         <i data-lucide="save" class="w-4 h-4 sm:w-5 sm:h-5"></i>
@@ -399,7 +425,7 @@
                     </button>
                     <button 
                         onclick="exportToFile()" 
-                        class="bg-indigo-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-indigo-600 transition flex items-center gap-2 text-xs sm:text-sm"
+                        class="bg-gradient-to-r from-indigo-100 to-blue-100 text-indigo-700 px-5 sm:px-7 py-2.5 rounded-xl hover:from-indigo-200 hover:to-blue-200 transition-all flex items-center gap-2 border-2 border-indigo-300 text-xs sm:text-sm font-semibold shadow-sm hover:shadow-md"
                         aria-label="Export ke file"
                     >
                         <i data-lucide="download" class="w-4 h-4 sm:w-5 sm:h-5"></i>
@@ -411,8 +437,11 @@
     </div>
 
     <!-- Footer -->
-    <div class="max-w-6xl mx-auto mt-4 sm:mt-6 text-center text-white text-xs sm:text-sm opacity-90">
-        <p>© 2024 - Ade Ramadhani Putra (202240045) - Statistika dan Probabilitas</p>
+    <div class="max-w-7xl mx-auto mt-6 sm:mt-8 text-center">
+        <div class="bg-white bg-opacity-80 backdrop-blur-sm rounded-xl p-4 sm:p-5 shadow-md">
+            <p class="text-gray-700 font-semibold text-xs sm:text-sm">© 2026 - Ade Ramadhani Putra (202240045)</p>
+            <p class="text-gray-600 text-xs sm:text-sm mt-1">Statistika dan Probabilitas</p>
+        </div>
     </div>
 
     <script>
@@ -601,61 +630,61 @@
             const marginPercent = (marginError * 100).toFixed(2);
             
             const steps = `
-                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-indigo-500">
+                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-cyan-500 shadow-sm">
                     <div class="flex items-start gap-2 sm:gap-3">
-                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0 text-sm sm:text-base">1</div>
+                        <div class="bg-cyan-500 text-white rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0 text-sm sm:text-base">1</div>
                         <div class="flex-1">
                             <h3 class="font-bold text-gray-800 mb-2 text-xs sm:text-sm">Identifikasi Variabel</h3>
                             <div class="space-y-1 text-xs sm:text-sm text-gray-700">
-                                <p>• Populasi (N) = <strong class="text-indigo-600">${population.toLocaleString('id-ID')}</strong></p>
-                                <p>• Margin of Error (e) = <strong class="text-indigo-600">${marginPercent}%</strong> = <strong class="text-indigo-600">${marginError.toFixed(4)}</strong></p>
+                                <p>• Populasi (N) = <strong class="text-cyan-600">${population.toLocaleString('id-ID')}</strong></p>
+                                <p>• Margin of Error (e) = <strong class="text-cyan-600">${marginPercent}%</strong> = <strong class="text-cyan-600">${marginError.toFixed(4)}</strong></p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-indigo-500">
+                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-cyan-500 shadow-sm">
                     <div class="flex items-start gap-2 sm:gap-3">
-                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0 text-sm sm:text-base">2</div>
+                        <div class="bg-cyan-500 text-white rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0 text-sm sm:text-base">2</div>
                         <div class="flex-1">
                             <h3 class="font-bold text-gray-800 mb-2 text-xs sm:text-sm">Hitung e²</h3>
                             <div class="bg-gray-50 p-3 sm:p-4 rounded-lg font-mono text-xs sm:text-sm">
                                 <p>e² = ${marginError.toFixed(4)}²</p>
-                                <p>e² = <strong class="text-indigo-600">${eSquared.toFixed(8)}</strong></p>
+                                <p>e² = <strong class="text-cyan-600">${eSquared.toFixed(8)}</strong></p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-indigo-500">
+                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-cyan-500 shadow-sm">
                     <div class="flex items-start gap-2 sm:gap-3">
-                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0 text-sm sm:text-base">3</div>
+                        <div class="bg-cyan-500 text-white rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0 text-sm sm:text-base">3</div>
                         <div class="flex-1">
                             <h3 class="font-bold text-gray-800 mb-2 text-xs sm:text-sm">Hitung N × e²</h3>
                             <div class="bg-gray-50 p-3 sm:p-4 rounded-lg font-mono text-xs sm:text-sm">
                                 <p>N × e² = ${population.toLocaleString('id-ID')} × ${eSquared.toFixed(8)}</p>
-                                <p>N × e² = <strong class="text-indigo-600">${(population * eSquared).toFixed(6)}</strong></p>
+                                <p>N × e² = <strong class="text-cyan-600">${(population * eSquared).toFixed(6)}</strong></p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-indigo-500">
+                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-cyan-500 shadow-sm">
                     <div class="flex items-start gap-2 sm:gap-3">
-                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0 text-sm sm:text-base">4</div>
+                        <div class="bg-cyan-500 text-white rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0 text-sm sm:text-base">4</div>
                         <div class="flex-1">
                             <h3 class="font-bold text-gray-800 mb-2 text-xs sm:text-sm">Hitung 1 + N × e²</h3>
                             <div class="bg-gray-50 p-3 sm:p-4 rounded-lg font-mono text-xs sm:text-sm">
                                 <p>1 + N × e² = 1 + ${(population * eSquared).toFixed(6)}</p>
-                                <p>Penyebut = <strong class="text-indigo-600">${denominator.toFixed(6)}</strong></p>
+                                <p>Penyebut = <strong class="text-cyan-600">${denominator.toFixed(6)}</strong></p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-green-500">
+                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-green-500 shadow-md">
                     <div class="flex items-start gap-2 sm:gap-3">
-                        <div class="bg-green-100 text-green-600 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0">
+                        <div class="bg-green-500 text-white rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0">
                             <i data-lucide="check" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                         </div>
                         <div class="flex-1">
@@ -774,19 +803,19 @@
                 const percentage = ((sample / population) * 100).toFixed(2);
                 
                 const isCurrentRow = Math.abs(m.value - currentMarginError) < 0.001;
-                const rowClass = isCurrentRow ? 'bg-indigo-100 font-bold' : 'bg-white hover:bg-gray-50';
+                const rowClass = isCurrentRow ? 'bg-cyan-100 font-bold' : 'bg-white hover:bg-cyan-50';
                 
                 tableHTML += `
                     <tr class="${rowClass} transition-colors">
-                        <td class="px-3 sm:px-4 py-2 sm:py-3">
+                        <td class="px-3 sm:px-4 py-3 sm:py-4">
                             <div class="flex items-center gap-2">
-                                ${isCurrentRow ? '<i data-lucide="arrow-right" class="w-3 h-3 sm:w-4 sm:h-4 text-indigo-600"></i>' : ''}
+                                ${isCurrentRow ? '<i data-lucide="arrow-right" class="w-3 h-3 sm:w-4 sm:h-4 text-cyan-600"></i>' : ''}
                                 <span>${m.label}${isCurrentRow ? ' (Anda)' : ''}</span>
                             </div>
                         </td>
-                        <td class="px-3 sm:px-4 py-2 sm:py-3 text-center">${m.precision}</td>
-                        <td class="px-3 sm:px-4 py-2 sm:py-3 text-center text-indigo-600 font-semibold">${sample.toLocaleString('id-ID')}</td>
-                        <td class="px-3 sm:px-4 py-2 sm:py-3 text-center">${percentage}%</td>
+                        <td class="px-3 sm:px-4 py-3 sm:py-4 text-center">${m.precision}</td>
+                        <td class="px-3 sm:px-4 py-3 sm:py-4 text-center text-cyan-600 font-semibold">${sample.toLocaleString('id-ID')}</td>
+                        <td class="px-3 sm:px-4 py-3 sm:py-4 text-center">${percentage}%</td>
                     </tr>
                 `;
             });
@@ -812,11 +841,11 @@
                     datasets: [{
                         data: [sampleSize, notSampled],
                         backgroundColor: [
-                            'rgba(99, 102, 241, 0.8)',
+                            'rgba(8, 145, 178, 0.8)',
                             'rgba(229, 231, 235, 0.8)'
                         ],
                         borderColor: [
-                            'rgba(99, 102, 241, 1)',
+                            'rgba(8, 145, 178, 1)',
                             'rgba(209, 213, 219, 1)'
                         ],
                         borderWidth: 2
@@ -830,9 +859,9 @@
                             position: 'bottom',
                             labels: {
                                 font: {
-                                    size: 10
+                                    size: 11
                                 },
-                                padding: 10
+                                padding: 12
                             }
                         },
                         tooltip: {
