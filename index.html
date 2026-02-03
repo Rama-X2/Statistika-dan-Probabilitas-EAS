@@ -118,8 +118,9 @@
                     <h2 class="text-base sm:text-lg md:text-xl font-bold text-indigo-600 border-l-4 border-indigo-500 pl-3 sm:pl-4">1. Input Data Pengujian</h2>
                 </div>
                 
-                <div class="overflow-x-auto bg-gray-50 rounded-xl p-3 sm:p-4">
-                    <table class="w-full text-center border-collapse min-w-[500px]">
+                <div class="bg-gray-50 rounded-xl p-3 sm:p-4">
+                    <div class="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
+                        <table class="w-full text-center border-collapse min-w-[500px] sm:min-w-0">
                         <thead>
                             <tr class="bg-indigo-500 text-white text-xs sm:text-sm">
                                 <th class="p-2 sm:p-3 rounded-tl-lg">No</th>
@@ -212,6 +213,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                     
                     <div class="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mt-4 sm:mt-6">
                         <button 
@@ -356,7 +358,11 @@
 
     <!-- Footer -->
     <div class="max-w-6xl mx-auto mt-4 sm:mt-6 text-center text-white text-xs sm:text-sm opacity-90">
-        <p>© 2024 - Ade Ramadhani Putra (202240045) - Statistika dan Probabilitas</p>
+        <p class="hidden sm:block">© 2026 - Ade Ramadhani Putra (202240045) - Statistika dan Probabilitas</p>
+        <div class="sm:hidden">
+            <p>© 2026 - Ade Ramadhani Putra (202240045)</p>
+            <p class="mt-1">Statistika dan Probabilitas</p>
+        </div>
     </div>
 
     <script>
