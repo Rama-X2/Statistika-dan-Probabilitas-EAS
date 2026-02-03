@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kalkulator Rumus Slovin untuk menghitung ukuran sampel penelitian">
+    <title>Kalkulator Rumus Slovin - Statistika & Probabilitas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        @media print {
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-600 to-purple-700 min-h-screen p-2 sm:p-4 md:p-8 font-sans">
+
+    <!-- Navigation Bar -->
+    <nav class="max-w-6xl mx-auto mb-4 sm:mb-6">
+        <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+                <div class="flex items-center gap-2 text-center sm:text-left">
+                    <i data-lucide="book-open" class="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600 hidden sm:block"></i>
+                    <div>
+                        <h2 class="font-bold text-gray-800 text-sm sm:text-base">Statistika & Probabilitas</h2>
+                        <p class="text-xs text-gray-600 hidden sm:block">EAS - Tugas Akhir Semester</p>
+                    </div>
+                </div>
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <a href="index.html" class="flex-1 sm:flex-initial bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition text-center text-xs sm:text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                        <span>Regresi Linier</span>
+                    </a>
+                    <a href="rumus_slovin.html" class="flex-1 sm:flex-initial bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg font-semibold text-center text-xs sm:text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="calculator" class="w-4 h-4"></i>
+                        <span>Rumus Slovin</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-2xl p-4 flex items-center gap-3 min-w-[250px] sm:min-w-[300px] max-w-md fade-in">
+            <div id="toastIcon" class="flex-shrink-0"></div>
+            <div class="flex-1">
+                <p id="toastMessage" class="text-xs sm:text-sm font-medium text-gray-900"></p>
+            </div>
+            <button onclick="hideToast()" class="flex-shrink-0 text-gray-400 hover:text-gray-600" aria-label="Tutup notifikasi">
+                <i data-lucide="x" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 flex flex-col items-center gap-4">
+            <div class="animate-spin">
+                <i data-lucide="loader-2" class="w-10 h-10 sm:w-12 sm:h-12 text-indigo-600"></i>
+            </div>
+            <p class="text-gray-700 font-medium text-sm sm:text-base">Menghitung ukuran sampel...</p>
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto bg-white rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-4 sm:p-6 md:p-8 text-white text-center">
+            <div class="flex items-center justify-center gap-2 sm:gap-3 mb-2">
+                <i data-lucide="bar-chart-2" class="w-8 h-8 sm:w-10 sm:h-10"></i>
+                <h1 class="text-xl sm:text-2xl md:text-3xl font-bold">Kalkulator Rumus Slovin</h1>
+            </div>
+            <p class="opacity-90 text-xs sm:text-sm md:text-base">Hitung Ukuran Sampel untuk Penelitian dengan Mudah dan Akurat</p>
+        </div>
+
+        <!-- Student Info Table -->
+        <div class="p-4 sm:p-6 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-50 border-b-4 border-indigo-200">
+            <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-3 sm:p-4 text-white text-center">
+                    <h3 class="font-bold text-sm sm:text-base flex items-center justify-center gap-2">
+                        <i data-lucide="user-circle" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        Informasi Mahasiswa
+                    </h3>
+                </div>
+                <table class="w-full text-xs sm:text-sm">
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-2 sm:p-3 font-semibold text-gray-700 w-24 sm:w-32">Nama</td>
+                            <td class="p-2 sm:p-3 text-gray-600">: Ade Ramadhani Putra</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-2 sm:p-3 font-semibold text-gray-700">NIM</td>
+                            <td class="p-2 sm:p-3 text-gray-600">: 202240045</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-2 sm:p-3 font-semibold text-gray-700">Mata Kuliah</td>
+                            <td class="p-2 sm:p-3 text-gray-600">: Statistika dan Probabilitas</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="p-4 sm:p-6 md:p-10 space-y-6 sm:space-y-8 md:space-y-10">
+            
+            <!-- Section 1: Input Data -->
+            <section>
+                <div class="flex items-center gap-2 mb-4 sm:mb-6">
+                    <i data-lucide="clipboard-list" class="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600"></i>
+                    <h2 class="text-base sm:text-lg md:text-xl font-bold text-indigo-600 border-l-4 border-indigo-500 pl-3 sm:pl-4">1. Input Data Penelitian</h2>
+                </div>
+                
+                <div class="bg-gray-50 rounded-xl p-4 sm:p-6">
+                    <div class="grid md:grid-cols-2 gap-4 sm:gap-6">
+                        <!-- Population Input -->
+                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md">
+                            <label for="population" class="block text-xs sm:text-sm font-bold text-gray-700 mb-3 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-lg p-2 mr-2">
+                                    <i data-lucide="users" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                                </span>
+                                Jumlah Populasi (N)
+                            </label>
+                            <input 
+                                type="number" 
+                                id="population" 
+                                min="1"
+                                max="1000000000"
+                                step="1"
+                                placeholder="Contoh: 1000"
+                                class="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition text-center text-xl sm:text-2xl font-bold"
+                                aria-describedby="populationHelp"
+                                aria-required="true"
+                            >
+                            <p id="populationHelp" class="text-xs text-gray-500 mt-2 text-center">Total jumlah populasi yang akan diteliti</p>
+                        </div>
+
+                        <!-- Margin of Error Input -->
+                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md">
+                            <label for="marginError" class="block text-xs sm:text-sm font-bold text-gray-700 mb-3 flex items-center">
+                                <span class="bg-orange-100 text-orange-600 rounded-lg p-2 mr-2">
+                                    <i data-lucide="target" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                                </span>
+                                Margin of Error (e)
+                            </label>
+                            <select 
+                                id="marginError" 
+                                class="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition text-center text-sm sm:text-lg font-semibold"
+                                aria-describedby="marginHelp"
+                                aria-required="true"
+                            >
+                                <option value="">-- Pilih Tingkat Presisi --</option>
+                                <option value="0.01">1% - Presisi Sangat Tinggi</option>
+                                <option value="0.03">3% - Presisi Tinggi</option>
+                                <option value="0.05">5% - Presisi Standar (Umum)</option>
+                                <option value="0.07">7% - Presisi Sedang</option>
+                                <option value="0.10">10% - Presisi Rendah</option>
+                                <option value="custom">Custom - Masukkan Sendiri</option>
+                            </select>
+                            <p id="marginHelp" class="text-xs text-gray-500 mt-2 text-center">Tingkat kesalahan yang dapat ditoleransi</p>
+                        </div>
+
+                        <!-- Custom Margin Error -->
+                        <div id="customMarginSection" class="hidden md:col-span-2 bg-yellow-50 p-4 sm:p-6 rounded-xl border-2 border-yellow-300">
+                            <label for="customMargin" class="block text-xs sm:text-sm font-bold text-gray-700 mb-3 flex items-center justify-center">
+                                <span class="bg-yellow-100 text-yellow-600 rounded-lg p-2 mr-2">
+                                    <i data-lucide="settings" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                                </span>
+                                Masukkan Custom Margin of Error (%)
+                            </label>
+                            <div class="flex items-center justify-center gap-4">
+                                <input 
+                                    type="number" 
+                                    id="customMargin" 
+                                    min="0.1"
+                                    max="50"
+                                    step="0.1"
+                                    placeholder="Contoh: 2.5"
+                                    class="w-32 sm:w-48 px-3 sm:px-4 py-2 sm:py-3 border-2 border-yellow-300 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500 focus:outline-none text-center text-lg sm:text-xl font-bold"
+                                    aria-label="Custom margin of error dalam persen"
+                                >
+                                <span class="text-xl sm:text-2xl font-bold text-gray-700">%</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2 text-center">Rentang: 0.1% - 50%</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mt-6 sm:mt-8">
+                        <button 
+                            onclick="calculate()" 
+                            class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full font-bold hover:from-indigo-700 hover:to-purple-700 transition shadow-lg text-sm sm:text-base md:text-lg flex items-center gap-2"
+                            aria-label="Hitung ukuran sampel"
+                        >
+                            <i data-lucide="calculator" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                            <span>Hitung Sampel</span>
+                        </button>
+                        <button 
+                            onclick="resetData()" 
+                            class="bg-gray-500 text-white px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full font-bold hover:bg-gray-600 transition text-sm sm:text-base md:text-lg flex items-center gap-2"
+                            aria-label="Reset semua input"
+                        >
+                            <i data-lucide="refresh-cw" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                            <span>Reset</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Results -->
+            <div id="results" class="hidden space-y-6 sm:space-y-8 md:space-y-10">
+                
+                <!-- Main Result Card -->
+                <div class="grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+                    <!-- Result Display -->
+                    <div class="bg-gradient-to-br from-pink-500 to-rose-500 p-4 sm:p-6 md:p-8 rounded-2xl text-white shadow-2xl">
+                        <h3 class="text-sm sm:text-base md:text-lg font-semibold mb-4 flex items-center">
+                            <span class="bg-white bg-opacity-20 rounded-lg p-2 mr-2">
+                                <i data-lucide="trending-up" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                            </span>
+                            Hasil Perhitungan Slovin
+                        </h3>
+                        
+                        <div class="bg-white bg-opacity-20 p-4 sm:p-6 rounded-xl mb-4">
+                            <p class="text-xs sm:text-sm opacity-90 mb-2">Ukuran Sampel Minimum (n)</p>
+                            <div id="sampleSize" class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-center my-4">-</div>
+                            <p class="text-center text-xs sm:text-sm opacity-90">responden</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                                <p class="text-xs opacity-75 mb-1 flex items-center gap-1">
+                                    <i data-lucide="users" class="w-3 h-3"></i>
+                                    Populasi (N)
+                                </p>
+                                <p id="displayPopulation" class="text-base sm:text-lg md:text-xl font-bold">-</p>
+                            </div>
+                            <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                                <p class="text-xs opacity-75 mb-1 flex items-center gap-1">
+                                    <i data-lucide="percent" class="w-3 h-3"></i>
+                                    Margin Error (e)
+                                </p>
+                                <p id="displayMargin" class="text-base sm:text-lg md:text-xl font-bold">-</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-t border-white border-opacity-30">
+                            <p class="text-xs opacity-75 mb-2 flex items-center gap-1">
+                                <i data-lucide="function-square" class="w-3 h-3"></i>
+                                Rumus yang Digunakan:
+                            </p>
+                            <code class="text-xs sm:text-sm font-mono bg-white bg-opacity-20 p-2 rounded block text-center">n = N / (1 + N × e²)</code>
+                        </div>
+                    </div>
+
+                    <!-- Visual Chart -->
+                    <div class="bg-gray-50 p-4 sm:p-6 rounded-2xl shadow-inner">
+                        <h3 class="text-center font-bold mb-4 text-gray-700 text-sm sm:text-base md:text-lg flex items-center justify-center gap-2">
+                            <i data-lucide="pie-chart" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                            Visualisasi Perbandingan
+                        </h3>
+                        <canvas id="comparisonChart"></canvas>
+                        <div class="mt-4 text-center">
+                            <p class="text-xs sm:text-sm text-gray-600">Perbandingan Populasi vs Sampel yang Dibutuhkan</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Calculation Steps -->
+                <section class="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 sm:p-6 md:p-8 rounded-2xl border-2 border-indigo-200">
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-indigo-700 mb-4 sm:mb-6 flex items-center flex-wrap">
+                        <span class="bg-indigo-100 text-indigo-600 rounded-lg p-2 sm:p-3 mr-2 sm:mr-3">
+                            <i data-lucide="list-ordered" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                        </span>
+                        <span>Langkah-Langkah Perhitungan Detail</span>
+                    </h2>
+                    
+                    <div id="calculationSteps" class="space-y-3 sm:space-y-4">
+                        <!-- Steps will be inserted here -->
+                    </div>
+
+                    <div class="mt-4 sm:mt-6 p-3 sm:p-4 bg-white rounded-xl border-l-4 border-indigo-500">
+                        <div class="flex items-start gap-2">
+                            <i data-lucide="lightbulb" class="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <h4 class="font-bold text-indigo-700 mb-2 text-xs sm:text-sm">Catatan Penting:</h4>
+                                <p class="text-xs sm:text-sm text-gray-700">Hasil perhitungan menggunakan rumus Slovin memberikan ukuran sampel <strong>minimum</strong> yang diperlukan. Anda dapat mengambil sampel lebih banyak untuk meningkatkan keakuratan penelitian.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interpretation Section -->
+                <section class="bg-gradient-to-br from-green-50 to-emerald-50 p-4 sm:p-6 md:p-8 rounded-2xl border-2 border-green-200">
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-green-700 mb-4 sm:mb-6 flex items-center flex-wrap">
+                        <span class="bg-green-100 text-green-600 rounded-lg p-2 sm:p-3 mr-2 sm:mr-3">
+                            <i data-lucide="message-circle" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                        </span>
+                        <span>Interpretasi Hasil</span>
+                    </h2>
+                    
+                    <div id="interpretation" class="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-700">
+                        <!-- Interpretation will be inserted here -->
+                    </div>
+                </section>
+
+                <!-- Recommendations -->
+                <section class="bg-gradient-to-br from-orange-50 to-amber-50 p-4 sm:p-6 md:p-8 rounded-2xl border-2 border-orange-200">
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-orange-700 mb-4 sm:mb-6 flex items-center flex-wrap">
+                        <span class="bg-orange-100 text-orange-600 rounded-lg p-2 sm:p-3 mr-2 sm:mr-3">
+                            <i data-lucide="star" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                        </span>
+                        <span>Rekomendasi</span>
+                    </h2>
+                    
+                    <div id="recommendations" class="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-700">
+                        <!-- Recommendations will be inserted here -->
+                    </div>
+                </section>
+
+                <!-- Comparison Table -->
+                <section class="bg-white p-4 sm:p-6 md:p-8 rounded-2xl border-2 border-gray-200 shadow-md">
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center flex-wrap">
+                        <span class="bg-gray-100 text-gray-600 rounded-lg p-2 sm:p-3 mr-2 sm:mr-3">
+                            <i data-lucide="table" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                        </span>
+                        <span>Perbandingan Berbagai Margin Error</span>
+                    </h2>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse text-xs sm:text-sm min-w-[500px]">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-left border-b-2 border-gray-300">
+                                        <div class="flex items-center gap-2">
+                                            <i data-lucide="percent" class="w-3 h-3 sm:w-4 sm:h-4"></i>
+                                            Margin Error
+                                        </div>
+                                    </th>
+                                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-center border-b-2 border-gray-300">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <i data-lucide="gauge" class="w-3 h-3 sm:w-4 sm:h-4"></i>
+                                            Tingkat Presisi
+                                        </div>
+                                    </th>
+                                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-center border-b-2 border-gray-300">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <i data-lucide="users-2" class="w-3 h-3 sm:w-4 sm:h-4"></i>
+                                            Ukuran Sampel
+                                        </div>
+                                    </th>
+                                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-center border-b-2 border-gray-300">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <i data-lucide="pie-chart" class="w-3 h-3 sm:w-4 sm:h-4"></i>
+                                            % Populasi
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="comparisonTable" class="divide-y divide-gray-200">
+                                <!-- Rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Export Actions -->
+                <div class="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 no-print">
+                    <button 
+                        onclick="printResults()" 
+                        class="bg-blue-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-600 transition flex items-center gap-2 text-xs sm:text-sm"
+                        aria-label="Cetak hasil"
+                    >
+                        <i data-lucide="printer" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        <span>Cetak</span>
+                    </button>
+                    <button 
+                        onclick="copyToClipboard()" 
+                        class="bg-green-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-green-600 transition flex items-center gap-2 text-xs sm:text-sm"
+                        aria-label="Salin ke clipboard"
+                    >
+                        <i data-lucide="copy" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        <span>Salin</span>
+                    </button>
+                    <button 
+                        onclick="saveToLocalStorage()" 
+                        class="bg-purple-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-purple-600 transition flex items-center gap-2 text-xs sm:text-sm"
+                        aria-label="Simpan ke browser"
+                    >
+                        <i data-lucide="save" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        <span>Simpan</span>
+                    </button>
+                    <button 
+                        onclick="exportToFile()" 
+                        class="bg-indigo-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-indigo-600 transition flex items-center gap-2 text-xs sm:text-sm"
+                        aria-label="Export ke file"
+                    >
+                        <i data-lucide="download" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        <span>Export</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="max-w-6xl mx-auto mt-4 sm:mt-6 text-center text-white text-xs sm:text-sm opacity-90">
+        <p>© 2024 - Ade Ramadhani Putra (202240045) - Statistika dan Probabilitas</p>
+    </div>
+
+    <script>
+        // Constants
+        const PRECISION_LEVELS = {
+            VERY_HIGH: { min: 0, max: 0.02, label: 'Sangat Tinggi' },
+            HIGH: { min: 0.02, max: 0.04, label: 'Tinggi' },
+            STANDARD: { min: 0.04, max: 0.06, label: 'Standar' },
+            MEDIUM: { min: 0.06, max: 0.08, label: 'Sedang' },
+            LOW: { min: 0.08, max: 1, label: 'Rendah' }
+        };
+
+        // Global Variables
+        let chartInstance = null;
+        let currentPopulation = 0;
+        let currentMarginError = 0;
+        let currentSampleSize = 0;
+
+        // Toast Notification System
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+            
+            const icons = {
+                success: '<i data-lucide="check-circle" class="w-6 h-6 text-green-500"></i>',
+                error: '<i data-lucide="alert-circle" class="w-6 h-6 text-red-500"></i>',
+                warning: '<i data-lucide="alert-triangle" class="w-6 h-6 text-yellow-500"></i>',
+                info: '<i data-lucide="info" class="w-6 h-6 text-blue-500"></i>'
+            };
+            
+            toastMessage.textContent = message;
+            toastIcon.innerHTML = icons[type] || icons.info;
+            toast.classList.remove('hidden');
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                hideToast();
+            }, 4000);
+        }
+
+        function hideToast() {
+            document.getElementById('toast').classList.add('hidden');
+        }
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        // Validation Functions
+        function validatePopulation(population) {
+            if (!population || isNaN(population)) {
+                showToast('Harap masukkan jumlah populasi yang valid', 'warning');
+                return false;
+            }
+
+            if (population < 1) {
+                showToast('Jumlah populasi harus minimal 1', 'error');
+                return false;
+            }
+
+            if (population > 1000000000) {
+                showToast('Jumlah populasi terlalu besar (maksimal 1 miliar)', 'error');
+                return false;
+            }
+
+            return true;
+        }
+
+        function validateMarginError(marginError) {
+            if (!marginError || isNaN(marginError)) {
+                showToast('Harap pilih atau masukkan margin of error yang valid', 'warning');
+                return false;
+            }
+
+            if (marginError <= 0) {
+                showToast('Margin of error harus lebih dari 0%', 'error');
+                return false;
+            }
+
+            if (marginError >= 1) {
+                showToast('Margin of error harus kurang dari 100%', 'error');
+                return false;
+            }
+
+            if (marginError > 0.5) {
+                showToast('Margin of error terlalu besar (maksimal 50%). Hasil mungkin tidak akurat.', 'warning');
+            }
+
+            return true;
+        }
+
+        // Event Listeners
+        document.getElementById('marginError').addEventListener('change', function() {
+            const customSection = document.getElementById('customMarginSection');
+            if (this.value === 'custom') {
+                customSection.classList.remove('hidden');
+                customSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                customSection.classList.add('hidden');
+            }
+            lucide.createIcons();
+        });
+
+        // Main Calculate Function
+        function calculate() {
+            showLoading();
+
+            setTimeout(() => {
+                const population = parseInt(document.getElementById('population').value);
+                let marginErrorSelect = document.getElementById('marginError').value;
+                let marginError;
+
+                if (!validatePopulation(population)) {
+                    hideLoading();
+                    return;
+                }
+
+                if (marginErrorSelect === 'custom') {
+                    const customMargin = parseFloat(document.getElementById('customMargin').value);
+                    if (!customMargin) {
+                        hideLoading();
+                        showToast('Harap masukkan nilai custom margin of error', 'warning');
+                        return;
+                    }
+                    marginError = customMargin / 100;
+                } else if (marginErrorSelect === '') {
+                    hideLoading();
+                    showToast('Harap pilih margin of error', 'warning');
+                    return;
+                } else {
+                    marginError = parseFloat(marginErrorSelect);
+                }
+
+                if (!validateMarginError(marginError)) {
+                    hideLoading();
+                    return;
+                }
+
+                const eSquared = Math.pow(marginError, 2);
+                const denominator = 1 + (population * eSquared);
+                const sampleSize = Math.ceil(population / denominator);
+
+                if (sampleSize < 1) {
+                    hideLoading();
+                    showToast('Perhitungan menghasilkan ukuran sampel yang tidak valid', 'error');
+                    return;
+                }
+
+                if (sampleSize > population) {
+                    hideLoading();
+                    showToast('Ukuran sampel tidak boleh melebihi populasi', 'error');
+                    return;
+                }
+
+                currentPopulation = population;
+                currentMarginError = marginError;
+                currentSampleSize = sampleSize;
+
+                displayResults(population, marginError, sampleSize, eSquared, denominator);
+                displayCalculationSteps(population, marginError, sampleSize, eSquared, denominator);
+                displayInterpretation(population, marginError, sampleSize);
+                displayComparisonTable(population);
+                updateChart(population, sampleSize);
+
+                document.getElementById('results').classList.remove('hidden');
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+
+                hideLoading();
+                showToast('Perhitungan berhasil!', 'success');
+            }, 300);
+        }
+
+        function displayResults(population, marginError, sampleSize) {
+            document.getElementById('sampleSize').textContent = sampleSize.toLocaleString('id-ID');
+            document.getElementById('displayPopulation').textContent = population.toLocaleString('id-ID');
+            document.getElementById('displayMargin').textContent = (marginError * 100).toFixed(2) + '%';
+        }
+
+        function displayCalculationSteps(population, marginError, sampleSize, eSquared, denominator) {
+            const marginPercent = (marginError * 100).toFixed(2);
+            
+            const steps = `
+                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-indigo-500">
+                    <div class="flex items-start gap-2 sm:gap-3">
+                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0 text-sm sm:text-base">1</div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-gray-800 mb-2 text-xs sm:text-sm">Identifikasi Variabel</h3>
+                            <div class="space-y-1 text-xs sm:text-sm text-gray-700">
+                                <p>• Populasi (N) = <strong class="text-indigo-600">${population.toLocaleString('id-ID')}</strong></p>
+                                <p>• Margin of Error (e) = <strong class="text-indigo-600">${marginPercent}%</strong> = <strong class="text-indigo-600">${marginError.toFixed(4)}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-indigo-500">
+                    <div class="flex items-start gap-2 sm:gap-3">
+                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0 text-sm sm:text-base">2</div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-gray-800 mb-2 text-xs sm:text-sm">Hitung e²</h3>
+                            <div class="bg-gray-50 p-3 sm:p-4 rounded-lg font-mono text-xs sm:text-sm">
+                                <p>e² = ${marginError.toFixed(4)}²</p>
+                                <p>e² = <strong class="text-indigo-600">${eSquared.toFixed(8)}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-indigo-500">
+                    <div class="flex items-start gap-2 sm:gap-3">
+                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0 text-sm sm:text-base">3</div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-gray-800 mb-2 text-xs sm:text-sm">Hitung N × e²</h3>
+                            <div class="bg-gray-50 p-3 sm:p-4 rounded-lg font-mono text-xs sm:text-sm">
+                                <p>N × e² = ${population.toLocaleString('id-ID')} × ${eSquared.toFixed(8)}</p>
+                                <p>N × e² = <strong class="text-indigo-600">${(population * eSquared).toFixed(6)}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-indigo-500">
+                    <div class="flex items-start gap-2 sm:gap-3">
+                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0 text-sm sm:text-base">4</div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-gray-800 mb-2 text-xs sm:text-sm">Hitung 1 + N × e²</h3>
+                            <div class="bg-gray-50 p-3 sm:p-4 rounded-lg font-mono text-xs sm:text-sm">
+                                <p>1 + N × e² = 1 + ${(population * eSquared).toFixed(6)}</p>
+                                <p>Penyebut = <strong class="text-indigo-600">${denominator.toFixed(6)}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 sm:p-6 rounded-xl border-l-4 border-green-500">
+                    <div class="flex items-start gap-2 sm:gap-3">
+                        <div class="bg-green-100 text-green-600 rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center font-bold flex-shrink-0">
+                            <i data-lucide="check" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-gray-800 mb-2 text-xs sm:text-sm">Hasil Akhir</h3>
+                            <div class="bg-green-50 p-3 sm:p-4 rounded-lg font-mono text-xs sm:text-sm">
+                                <p>n = ${population.toLocaleString('id-ID')} ÷ ${denominator.toFixed(6)}</p>
+                                <p>n = ${(population / denominator).toFixed(4)}</p>
+                                <p class="mt-2 text-sm sm:text-base md:text-lg">n = <strong class="text-green-600">${sampleSize.toLocaleString('id-ID')} responden</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('calculationSteps').innerHTML = steps;
+            lucide.createIcons();
+        }
+
+        function displayInterpretation(population, marginError, sampleSize) {
+            const percentage = ((sampleSize / population) * 100).toFixed(2);
+            const marginPercent = (marginError * 100).toFixed(2);
+            
+            let precisionLevel = 'Standar';
+            for (const [key, level] of Object.entries(PRECISION_LEVELS)) {
+                if (marginError >= level.min && marginError < level.max) {
+                    precisionLevel = level.label;
+                    break;
+                }
+            }
+
+            let costEstimate = '';
+            if (sampleSize < 100) {
+                costEstimate = 'Biaya rendah, waktu singkat';
+            } else if (sampleSize < 500) {
+                costEstimate = 'Biaya sedang, waktu moderate';
+            } else if (sampleSize < 1000) {
+                costEstimate = 'Biaya tinggi, waktu cukup lama';
+            } else {
+                costEstimate = 'Biaya sangat tinggi, waktu lama';
+            }
+
+            const interpretation = `
+                <p class="flex items-start gap-2">
+                    <i data-lucide="check-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-green-600 mt-0.5 flex-shrink-0"></i>
+                    <span>Minimal <strong class="text-green-700">${sampleSize.toLocaleString('id-ID')} responden</strong> dari total <strong>${population.toLocaleString('id-ID')}</strong>.</span>
+                </p>
+                <p class="flex items-start gap-2">
+                    <i data-lucide="check-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-green-600 mt-0.5 flex-shrink-0"></i>
+                    <span>Setara dengan <strong class="text-green-700">${percentage}%</strong> dari populasi.</span>
+                </p>
+                <p class="flex items-start gap-2">
+                    <i data-lucide="check-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-green-600 mt-0.5 flex-shrink-0"></i>
+                    <span>Margin error <strong class="text-green-700">${marginPercent}%</strong>, presisi <strong class="text-green-700">${precisionLevel}</strong>.</span>
+                </p>
+                <p class="flex items-start gap-2">
+                    <i data-lucide="check-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-green-600 mt-0.5 flex-shrink-0"></i>
+                    <span>Estimasi: <strong class="text-green-700">${costEstimate}</strong>.</span>
+                </p>
+            `;
+            document.getElementById('interpretation').innerHTML = interpretation;
+            lucide.createIcons();
+
+            let recommendation = '';
+            if (marginError <= 0.03) {
+                recommendation = `
+                    <p class="flex items-start gap-2">
+                        <i data-lucide="target" class="w-4 h-4 sm:w-5 sm:h-5 text-orange-600 mt-0.5 flex-shrink-0"></i>
+                        <span>Presisi sangat tinggi cocok untuk penelitian yang memerlukan akurasi maksimal.</span>
+                    </p>
+                    <p class="flex items-start gap-2">
+                        <i data-lucide="dollar-sign" class="w-4 h-4 sm:w-5 sm:h-5 text-orange-600 mt-0.5 flex-shrink-0"></i>
+                        <span>Perhatikan bahwa sampel besar membutuhkan biaya dan waktu lebih banyak.</span>
+                    </p>
+                `;
+            } else if (marginError <= 0.05) {
+                recommendation = `
+                    <p class="flex items-start gap-2">
+                        <i data-lucide="check-square" class="w-4 h-4 sm:w-5 sm:h-5 text-orange-600 mt-0.5 flex-shrink-0"></i>
+                        <span>Margin error 5% adalah standar yang paling umum digunakan.</span>
+                    </p>
+                    <p class="flex items-start gap-2">
+                        <i data-lucide="scale" class="w-4 h-4 sm:w-5 sm:h-5 text-orange-600 mt-0.5 flex-shrink-0"></i>
+                        <span>Menawarkan keseimbangan terbaik antara akurasi dan efisiensi.</span>
+                    </p>
+                `;
+            } else {
+                recommendation = `
+                    <p class="flex items-start gap-2">
+                        <i data-lucide="zap" class="w-4 h-4 sm:w-5 sm:h-5 text-orange-600 mt-0.5 flex-shrink-0"></i>
+                        <span>Sampel lebih kecil menghemat biaya dan waktu penelitian.</span>
+                    </p>
+                    <p class="flex items-start gap-2">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 sm:w-5 sm:h-5 text-orange-600 mt-0.5 flex-shrink-0"></i>
+                        <span>Presisi lebih rendah, cocok untuk penelitian pendahuluan.</span>
+                    </p>
+                `;
+            }
+            document.getElementById('recommendations').innerHTML = recommendation;
+            lucide.createIcons();
+        }
+
+        function displayComparisonTable(population) {
+            const margins = [
+                { value: 0.01, label: '1%', precision: 'Sangat Tinggi' },
+                { value: 0.03, label: '3%', precision: 'Tinggi' },
+                { value: 0.05, label: '5%', precision: 'Standar' },
+                { value: 0.07, label: '7%', precision: 'Sedang' },
+                { value: 0.10, label: '10%', precision: 'Rendah' }
+            ];
+
+            let tableHTML = '';
+            margins.forEach(m => {
+                const eSquared = Math.pow(m.value, 2);
+                const denominator = 1 + (population * eSquared);
+                const sample = Math.ceil(population / denominator);
+                const percentage = ((sample / population) * 100).toFixed(2);
+                
+                const isCurrentRow = Math.abs(m.value - currentMarginError) < 0.001;
+                const rowClass = isCurrentRow ? 'bg-indigo-100 font-bold' : 'bg-white hover:bg-gray-50';
+                
+                tableHTML += `
+                    <tr class="${rowClass} transition-colors">
+                        <td class="px-3 sm:px-4 py-2 sm:py-3">
+                            <div class="flex items-center gap-2">
+                                ${isCurrentRow ? '<i data-lucide="arrow-right" class="w-3 h-3 sm:w-4 sm:h-4 text-indigo-600"></i>' : ''}
+                                <span>${m.label}${isCurrentRow ? ' (Anda)' : ''}</span>
+                            </div>
+                        </td>
+                        <td class="px-3 sm:px-4 py-2 sm:py-3 text-center">${m.precision}</td>
+                        <td class="px-3 sm:px-4 py-2 sm:py-3 text-center text-indigo-600 font-semibold">${sample.toLocaleString('id-ID')}</td>
+                        <td class="px-3 sm:px-4 py-2 sm:py-3 text-center">${percentage}%</td>
+                    </tr>
+                `;
+            });
+            
+            document.getElementById('comparisonTable').innerHTML = tableHTML;
+            lucide.createIcons();
+        }
+
+        function updateChart(population, sampleSize) {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null;
+            }
+
+            const notSampled = population - sampleSize;
+
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Sampel Diambil', 'Tidak Diambil'],
+                    datasets: [{
+                        data: [sampleSize, notSampled],
+                        backgroundColor: [
+                            'rgba(99, 102, 241, 0.8)',
+                            'rgba(229, 231, 235, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(99, 102, 241, 1)',
+                            'rgba(209, 213, 219, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 10
+                                },
+                                padding: 10
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed.toLocaleString('id-ID');
+                                    const percentage = ((context.parsed / population) * 100).toFixed(2);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Reset Function
+        function resetData() {
+            if (currentSampleSize > 0) {
+                if (!confirm('Yakin ingin mereset semua data?')) {
+                    return;
+                }
+            }
+
+            document.getElementById('population').value = '';
+            document.getElementById('marginError').value = '';
+            document.getElementById('customMargin').value = '';
+            document.getElementById('customMarginSection').classList.add('hidden');
+            document.getElementById('results').classList.add('hidden');
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null;
+            }
+            
+            currentPopulation = 0;
+            currentMarginError = 0;
+            currentSampleSize = 0;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showToast('Data berhasil direset', 'info');
+        }
+
+        // Print Results
+        function printResults() {
+            window.print();
+            showToast('Mencetak hasil...', 'info');
+        }
+
+        // Copy to Clipboard
+        function copyToClipboard() {
+            const text = `
+HASIL PERHITUNGAN RUMUS SLOVIN
+================================
+
+Mahasiswa:
+Nama: Ade Ramadhani Putra
+NIM: 202240045
+Mata Kuliah: Statistika dan Probabilitas
+
+Populasi (N): ${currentPopulation.toLocaleString('id-ID')}
+Margin of Error (e): ${(currentMarginError * 100).toFixed(2)}%
+Ukuran Sampel (n): ${currentSampleSize.toLocaleString('id-ID')} responden
+
+Rumus: n = N / (1 + N × e²)
+
+Persentase Sampel: ${((currentSampleSize / currentPopulation) * 100).toFixed(2)}%
+
+Generated: ${new Date().toLocaleString('id-ID')}
+            `.trim();
+
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Berhasil disalin ke clipboard!', 'success');
+            }).catch(() => {
+                showToast('Gagal menyalin. Silakan copy manual.', 'error');
+            });
+        }
+
+        // Save to Local Storage
+        function saveToLocalStorage() {
+            if (!currentSampleSize) {
+                showToast('Tidak ada data untuk disimpan', 'warning');
+                return;
+            }
+
+            const data = {
+                timestamp: new Date().toISOString(),
+                population: currentPopulation,
+                marginError: currentMarginError,
+                sampleSize: currentSampleSize
+            };
+
+            try {
+                localStorage.setItem('slovinCalculation', JSON.stringify(data));
+                showToast('Data berhasil disimpan', 'success');
+            } catch (e) {
+                showToast('Gagal menyimpan: ' + e.message, 'error');
+            }
+        }
+
+        // Export to File
+        function exportToFile() {
+            if (!currentSampleSize) {
+                showToast('Tidak ada data untuk diekspor', 'warning');
+                return;
+            }
+
+            const text = `
+HASIL PERHITUNGAN RUMUS SLOVIN
+================================
+
+Mahasiswa:
+Nama: Ade Ramadhani Putra
+NIM: 202240045
+Mata Kuliah: Statistika dan Probabilitas
+
+Data Input:
+- Populasi (N): ${currentPopulation.toLocaleString('id-ID')}
+- Margin of Error (e): ${(currentMarginError * 100).toFixed(2)}%
+
+Hasil Perhitungan:
+- Ukuran Sampel (n): ${currentSampleSize.toLocaleString('id-ID')} responden
+- Persentase: ${((currentSampleSize / currentPopulation) * 100).toFixed(2)}%
+
+Rumus: n = N / (1 + N × e²)
+
+Tanggal: ${new Date().toLocaleString('id-ID')}
+            `.trim();
+
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `slovin-${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            showToast('File berhasil diekspor', 'success');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey || e.metaKey) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        calculate();
+                    } else if (e.key === 's') {
+                        e.preventDefault();
+                        saveToLocalStorage();
+                    }
+                }
+            });
+        });
+
+        setInterval(() => {
+            lucide.createIcons();
+        }, 1000);
+    </script>
+</body>
+</html>
